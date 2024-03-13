@@ -16,7 +16,7 @@
 		/** @type {Record<string, number>} */
 		const counts = { green: 0, yellow: 0, red: 0 }
 		for (const status of Object.values(userStatus)) {
-			if (status && counts.prototype.hasOwnProperty.call(counts, status)) {
+			if (status && Object.prototype.hasOwnProperty.call(counts, status)) {
 				counts[status]++
 			}
 		}
