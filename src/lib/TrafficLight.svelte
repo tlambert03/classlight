@@ -1,13 +1,14 @@
 <script>
-	import { supabase, getUserId } from '$lib'
+	import { getUserId } from '$lib'
 	import { onMount } from 'svelte'
+	import { insertFeedback, getLastStatus } from '$lib/supabaseClient'
 
 	/** @type {string} */
 	export let classId
 
 	// Import the necessary Svelte features if needed
 	/** @type {string} */
-	let selectedLight = 'green'
+	let selectedLight = ''
 	/** @type {string} */
 	let userId
 
@@ -18,22 +19,20 @@
 	function selectLight(color) {
 		if (selectedLight === color) return
 		selectedLight = color
-
-		// send a message to supabase to add a row to the feedback table
-		supabase
-			.from('feedback')
-			.insert([{ status: color, user_id: userId, class_id: classId }])
-			.then((response) => {
-				console.log('Feedback added:', response)
-			})
+		insertFeedback({ status: color, user_id: userId, class_id: classId })
 	}
 
 	onMount(async () => {
 		userId = getUserId()
+		console.log('hello userId:', userId)
+		// Set the light to the last status, or green if no status is found
+		getLastStatus(classId, userId, (status) => {
+			status ? (selectedLight = status) : selectLight('green')
+		})
 	})
 </script>
 
-<div class="box">
+<div class="wrapper">
 	<div class="traffic-light">
 		<button
 			class="light red {selectedLight === 'red' ? 'selected' : ''}"
@@ -51,29 +50,30 @@
 </div>
 
 <style>
-	.box {
+	.wrapper {
 		display: flex;
-		justify-content: center;
 		align-items: center;
-		height: 100vh;
+		height: 95vh; /* Using vh to ensure it takes the full viewport height */
 	}
 	.traffic-light {
 		display: flex;
 		flex-direction: column;
-		width: 45vw;
+		justify-content: center;
+		width: calc(100vh * 0.32); /* Adjust width based on viewport size */
+		height: calc(100vh * 0.83); /* Height adjusted to maintain aspect ratio */
 		background: black;
-		padding: 10vw 5vw;
 		margin: 0 auto;
-		border-radius: 20px;
+		border-radius: calc(100vmin * 0.02); /* Ensure rounded corners scale */
+		box-sizing: border-box; /* Include padding and border in the element's size */
 	}
 
 	.light {
 		border: none;
 		cursor: pointer;
-		height: 35vw;
-		width: 35vw;
+		height: calc(100vh * 0.2); /* Adjust button size based on viewport size */
+		width: calc(100vh * 0.2); /* Ensure buttons are circles with equal height and width */
 		border-radius: 50%;
-		margin: 5vw auto;
+		margin: calc(100vh * 0.025) auto; /* Adjust margin based on viewport size */
 		transition: opacity 0.3s ease;
 	}
 
@@ -86,10 +86,14 @@
 	}
 
 	.green {
-		background: #36ffab;
+		background: #00ff66;
 	}
-
-	.light:not(:hover).light:not(.selected) {
-		opacity: 0.3;
+	.light:not(.selected) {
+		opacity: 0.2;
+	}
+	@media (hover: hover) {
+		.light:hover {
+			opacity: 1;
+		}
 	}
 </style>

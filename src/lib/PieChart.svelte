@@ -2,7 +2,7 @@
 	import Chart from 'chart.js/auto'
 
 	/** @type {number[]} */
-	export let chartdata
+	export let chartData
 
 	const red = 'rgb(240, 0, 40)'
 	const yellow = 'rgb(255, 255, 86)'
@@ -33,4 +33,4 @@
 	}
 </script>
 
-<canvas use:makeChart={chartdata} width="400" height="200" />
+<canvas use:makeChart={chartData} width="400" height="200" />
