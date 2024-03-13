@@ -1,29 +1,41 @@
-from contextlib import suppress
+import json
 import os
+import re
 import subprocess
 import sys
-import supabase
-import json
-import re
+from contextlib import suppress
+from urllib.request import Request, urlopen
 
 ANON = os.getenv("VITE_SUPABASE_ANON_KEY", "") or os.getenv("SUPABASE_ANON_KEY", "")
 if not ANON:
     raise ValueError("SUPABASE_ANON_KEY environment variable not set")
 
 SB_URL = "https://zxfscexnhikqhyqtiifw.supabase.co"
+REST_URL = f"{SB_URL}/rest/v1/keynote"
 SLIDE_RE = re.compile(r"\(slide:\s(\d+),")
-
-try:
-    db = supabase.create_client(SB_URL, ANON)
-except Exception as e:
-    print(f"Error connecting to Supabase: {e}")
-    sys.exit(1)
+HEADERS = {
+    "Content-Type": "application/json",
+    "Authorization": f"Bearer {ANON}",
+    "Apikey": ANON,
+    "accept": "*/*",
+    "accept-encoding": "gzip, deflate, br",
+    "connection": "keep-alive",
+    "user-agent": "python-httpx/0.25.2",
+}
 
 
 def log_slide_number(slide_num: str, timestamp: str):
     """Save the slide number and timestamp to the database."""
-    data = {"slide_num": slide_num, "timestamp": timestamp}
-    db.table("keynote").insert(data).execute()
+    body = {"slide_num": str(slide_num), "timestamp": str(timestamp)}
+    data_bytes = json.dumps(body).encode("utf-8")
+    req = Request(REST_URL, headers=HEADERS, method="POST")
+    req.add_header("Content-Length", str(len(data_bytes)))
+    try:
+        with urlopen(req, data_bytes) as response:
+            if response.status == 201:
+                print(f"Logged slide number: {slide_num}")
+    except Exception as e:
+        print(f"Error logging slide number: {e}")
 
 
 def watch_keynote():
