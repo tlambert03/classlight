@@ -23,15 +23,11 @@
 		chartdata = [counts.red, counts.yellow, counts.green]
 	}
 
-	const handleFeedback = (payload) => {
-		console.log('Change received!', payload.new)
-		userStatus[payload.new.user_id] = payload.new.status
-		updateChart()
-	}
-
 	onMount(() => {
 		for (const row of data.feedback) {
-			userStatus[row.user_id] = row.status
+			if (row.user_id !== null) {
+				userStatus[row.user_id] = row.status
+			}
 		}
 		updateChart()
 		const channel = supabase
@@ -43,7 +39,10 @@
 					schema: 'public',
 					table: 'feedback'
 				},
-				handleFeedback
+				(payload) => {
+					userStatus[payload.new.user_id] = payload.new.status
+					updateChart()
+				}
 			)
 			.subscribe()
 	})
