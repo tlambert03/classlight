@@ -1,10 +1,15 @@
 <script>
-	import { supabase } from '$lib/supabaseClient'
+	import { supabase, getUserId } from '$lib'
+	import { onMount } from 'svelte'
+
 	/** @type {string} */
 	export let classId
 
 	// Import the necessary Svelte features if needed
+	/** @type {string} */
 	let selectedLight = 'green'
+	/** @type {string} */
+	let userId
 
 	/**
 	 * Function to select a light
@@ -13,17 +18,19 @@
 	function selectLight(color) {
 		if (selectedLight === color) return
 		selectedLight = color
-		// Add any actions you want to perform on light selection
-		console.log('Selected light:', color)
 
 		// send a message to supabase to add a row to the feedback table
 		supabase
 			.from('feedback')
-			.insert([{ status: color, user_id: '234', class_id: classId }])
+			.insert([{ status: color, user_id: userId, class_id: classId }])
 			.then((response) => {
 				console.log('Feedback added:', response)
 			})
 	}
+
+	onMount(async () => {
+		userId = getUserId()
+	})
 </script>
 
 <div class="box">
