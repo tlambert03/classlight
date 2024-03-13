@@ -1,6 +1,10 @@
-# classlight
+# classlight :expressionless:
 
-simple webapp to get realtime feedback from student audience.
+Tired of trying to interpret the faces of your students?
+
+Classlight is a minimalist webapp to get non-invasive realtime feedback from your student audience.
+
+----
 
 Students see a webpage with a traffic light graphic. They tap green to indicate "all is well",
 yellow to indicate they're having trouble keeping up, and red to indicate they're lost.
