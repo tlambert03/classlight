@@ -11,6 +11,7 @@
 	 * @param {string} color - The color of the light
 	 */
 	function selectLight(color) {
+		if (selectedLight === color) return
 		selectedLight = color
 		// Add any actions you want to perform on light selection
 		console.log('Selected light:', color)
@@ -52,7 +53,7 @@
 	.traffic-light {
 		display: flex;
 		flex-direction: column;
-		width: 60vw;
+		width: 45vw;
 		background: black;
 		padding: 10vw 5vw;
 		margin: 0 auto;
@@ -62,8 +63,8 @@
 	.light {
 		border: none;
 		cursor: pointer;
-		height: 45vw;
-		width: 45vw;
+		height: 35vw;
+		width: 35vw;
 		border-radius: 50%;
 		margin: 5vw auto;
 		transition: opacity 0.3s ease;

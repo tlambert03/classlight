@@ -3,4 +3,6 @@
 	import { page } from '$app/stores'
 </script>
 
-<TrafficLight classId={$page.params.class_id} />
+<main>
+	<TrafficLight classId={$page.params.class_id} />
+</main>
