@@ -2,4 +2,16 @@
 
 simple webapp to get realtime feedback from student audience.
 
-Provides a Red/Yellow/Green stoplight for students, and a pie chart for teacher showing percentage of the class that is happy with the pace.
+Students see a webpage with a traffic light graphic. They tap green to indicate "all is well",
+yellow to indicate they're having trouble keeping up, and red to indicate they're lost.
+
+![lights](https://github.com/tlambert03/classlight/assets/1609449/15e5cd22-2e4a-43a9-9d47-50c15392ff23)
+
+Presenters see a pie chart with the current breakdown of red/yellow/green respondents.
+
+No logins necessary.
+
+Pick a class id such, like "myclass-XYZ123":
+
+- student link (traffic-light): https://www.talleylambert.com/classlight/mycourse-XYZ123
+- summary link (pie chart): https://www.talleylambert.com/classlight/mycourse-XYZ123/summary
