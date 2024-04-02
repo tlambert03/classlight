@@ -42,11 +42,11 @@
 
 <style>
 	.counter {
-		font-size: 2em;
+		font-size: 3em;
 		font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 		text-align: center;
 		position: absolute;
-		top: 40px;
+		top: 20px;
 		left: 40px;
 	}
 </style>
